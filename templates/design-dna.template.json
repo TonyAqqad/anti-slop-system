@@ -1,0 +1,175 @@
+{
+  "$schema": "../schemas/design-dna.schema.json",
+  "meta": {
+    "projectName": "project-name-here",
+    "version": "1.0.0",
+    "personality": ["REPLACE_WITH_SPECIFIC_ADJECTIVE_1", "REPLACE_WITH_SPECIFIC_ADJECTIVE_2", "REPLACE_WITH_SPECIFIC_ADJECTIVE_3"],
+    "antiPatterns": ["corporate-memphis", "generic-saas-hero", "blue-purple-gradient"]
+  },
+  "primitives": {
+    "color": {
+      "model": "oklch",
+      "palette": {
+        "primary": {
+          "l": 0.45,
+          "c": 0.15,
+          "h": 0,
+          "_comment": "REPLACE: l=lightness(0-1), c=chroma(0-0.4), h=hue(0-360)"
+        },
+        "secondary": {
+          "l": 0.55,
+          "c": 0.10,
+          "h": 0,
+          "_comment": "REPLACE: Usually lower chroma than primary"
+        },
+        "accent": {
+          "l": 0.60,
+          "c": 0.20,
+          "h": 0,
+          "_comment": "REPLACE: High chroma for visual pop"
+        },
+        "background": {
+          "l": 0.98,
+          "c": 0.01,
+          "h": 0,
+          "_comment": "REPLACE: Very low chroma, high lightness for light mode"
+        },
+        "text": {
+          "l": 0.20,
+          "c": 0.02,
+          "h": 0,
+          "_comment": "REPLACE: Low lightness for readable text, slight hue tint"
+        }
+      },
+      "contrastRatios": {
+        "textOnBackground": 0,
+        "_textOnBackground_comment": "REPLACE: Must be >= 4.5 for WCAG AA. Calculate with chroma.contrast()",
+        "accentOnBackground": 0,
+        "_accentOnBackground_comment": "REPLACE: Must be >= 3 for UI components"
+      }
+    },
+    "typography": {
+      "scale": {
+        "base": 18,
+        "ratio": 1.333,
+        "ratioName": "perfectFourth",
+        "_ratioName_options": ["minorSecond(1.067)", "majorSecond(1.125)", "minorThird(1.2)", "majorThird(1.25)", "perfectFourth(1.333)", "augmentedFourth(1.414)", "perfectFifth(1.5)", "goldenRatio(1.618)"]
+      },
+      "families": {
+        "heading": ["REPLACE_DISTINCTIVE_FONT", "Georgia", "serif"],
+        "body": ["REPLACE_READABLE_FONT", "system-ui", "sans-serif"],
+        "mono": ["JetBrains Mono", "Consolas", "monospace"],
+        "_comment": "BANNED: Inter, Roboto, Open Sans, Poppins, Montserrat, Lato, Nunito"
+      },
+      "weights": {
+        "heading": [400, 700],
+        "body": [400, 500]
+      }
+    },
+    "motion": {
+      "springs": {
+        "snappy": {
+          "stiffness": 400,
+          "damping": 30,
+          "mass": 1,
+          "_comment": "For buttons, toggles, quick interactions"
+        },
+        "gentle": {
+          "stiffness": 120,
+          "damping": 14,
+          "mass": 1,
+          "_comment": "For page transitions, hero animations"
+        },
+        "bouncy": {
+          "stiffness": 300,
+          "damping": 10,
+          "mass": 1,
+          "_comment": "For playful, attention-grabbing elements"
+        }
+      },
+      "defaultSpring": "gentle",
+      "reducedMotion": "respectSystem",
+      "_reducedMotion_options": ["respectSystem", "alwaysReduce", "ignore (NOT RECOMMENDED)"]
+    },
+    "geometry": {
+      "borderRadius": {
+        "none": "0px",
+        "sm": "2px",
+        "md": "6px",
+        "lg": "12px",
+        "pill": "9999px",
+        "_comment": "VARY these values based on component. Don't use same radius everywhere."
+      },
+      "radiusPersonality": "mixed-sharp-soft",
+      "_radiusPersonality_options": ["sharp (0-4px)", "soft (8-16px)", "organic (variable/blob)", "mixed-sharp-soft (intentional contrast)"],
+      "spacing": {
+        "base": 4,
+        "scale": "fibonacci",
+        "_scale_options": ["linear (4,8,12,16...)", "fibonacci (4,8,12,20,32...)", "exponential (4,8,16,32...)"]
+      },
+      "aspectRatios": {
+        "hero": "16 / 9",
+        "card": "4 / 5",
+        "thumbnail": "1 / 1",
+        "golden": "1.618 / 1"
+      }
+    }
+  },
+  "generative": {
+    "noise": {
+      "seed": "REPLACE_WITH_UNIQUE_PROJECT_SEED",
+      "layoutJitter": {
+        "maxOffset": 6,
+        "rotationRange": [-2, 2],
+        "_comment": "Subtle: 2-4px/1deg, Medium: 4-8px/2deg, Bold: 8-12px/3deg"
+      },
+      "colorVariation": {
+        "hueShift": 5,
+        "lightnessVariation": 0.03,
+        "_comment": "Creates organic variation across repeated elements"
+      }
+    }
+  },
+  "components": {
+    "hero": {
+      "layout": "REPLACE",
+      "_layout_options": ["centered", "left-aligned", "asymmetric-split", "full-bleed-image", "video-background"],
+      "imageStyle": "REPLACE",
+      "_imageStyle_options": ["rectangular", "rounded", "masked-organic", "masked-geometric", "duotone"]
+    },
+    "cards": {
+      "variant": "REPLACE",
+      "_variant_options": ["elevated", "outlined", "filled", "ghost"],
+      "hoverEffect": "REPLACE",
+      "_hoverEffect_options": ["none", "subtle-lift", "scale", "border-highlight", "background-shift"],
+      "imageAspect": "4:5"
+    },
+    "buttons": {
+      "primary": {
+        "style": "solid",
+        "radius": "md",
+        "animation": "scale-press"
+      },
+      "secondary": {
+        "style": "ghost",
+        "radius": "sm",
+        "animation": "underline-slide"
+      },
+      "_style_options": ["solid", "outline", "ghost", "link"],
+      "_animation_options": ["none", "scale-press", "background-fill", "underline-slide", "icon-shift"]
+    },
+    "navigation": {
+      "style": "REPLACE",
+      "_style_options": ["minimal", "standard", "mega-menu", "sidebar"],
+      "position": "fixed",
+      "blur": true
+    }
+  },
+  "_INSTRUCTIONS": {
+    "1": "Replace all REPLACE_ values with actual design decisions",
+    "2": "Remove all _comment and _options fields before using",
+    "3": "Calculate and verify contrast ratios using chroma.js",
+    "4": "Ensure personality adjectives are SPECIFIC (not 'modern', 'clean', 'professional')",
+    "5": "Good personality examples: 'tactile', 'editorial', 'maximalist', 'industrial', 'botanical'"
+  }
+}

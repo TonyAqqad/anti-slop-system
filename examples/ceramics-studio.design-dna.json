@@ -1,0 +1,171 @@
+{
+  "$schema": "../schemas/design-dna.schema.json",
+  "meta": {
+    "projectName": "artisan-ceramics-studio",
+    "version": "1.0.0",
+    "personality": ["tactile", "earthy", "handcrafted", "warm"],
+    "antiPatterns": [
+      "corporate-memphis",
+      "blue-purple-gradient",
+      "floating-3d-mockup",
+      "generic-saas-hero",
+      "three-equal-cards"
+    ]
+  },
+  "primitives": {
+    "color": {
+      "model": "oklch",
+      "palette": {
+        "primary": {
+          "l": 0.42,
+          "c": 0.08,
+          "h": 55
+        },
+        "secondary": {
+          "l": 0.52,
+          "c": 0.05,
+          "h": 45
+        },
+        "accent": {
+          "l": 0.58,
+          "c": 0.16,
+          "h": 28
+        },
+        "background": {
+          "l": 0.97,
+          "c": 0.008,
+          "h": 60
+        },
+        "text": {
+          "l": 0.22,
+          "c": 0.025,
+          "h": 55
+        },
+        "muted": {
+          "l": 0.65,
+          "c": 0.03,
+          "h": 55
+        },
+        "border": {
+          "l": 0.88,
+          "c": 0.015,
+          "h": 55
+        }
+      },
+      "contrastRatios": {
+        "textOnBackground": 11.2,
+        "accentOnBackground": 4.8
+      }
+    },
+    "typography": {
+      "scale": {
+        "base": 18,
+        "ratio": 1.333,
+        "ratioName": "perfectFourth"
+      },
+      "families": {
+        "heading": ["Fraunces", "Georgia", "serif"],
+        "body": ["Satoshi", "system-ui", "sans-serif"],
+        "mono": ["JetBrains Mono", "Consolas", "monospace"]
+      },
+      "weights": {
+        "heading": [400, 600],
+        "body": [400, 500]
+      }
+    },
+    "motion": {
+      "springs": {
+        "snappy": {
+          "stiffness": 400,
+          "damping": 30,
+          "mass": 1
+        },
+        "gentle": {
+          "stiffness": 120,
+          "damping": 14,
+          "mass": 1
+        },
+        "bouncy": {
+          "stiffness": 280,
+          "damping": 12,
+          "mass": 0.8
+        }
+      },
+      "defaultSpring": "gentle",
+      "reducedMotion": "respectSystem"
+    },
+    "geometry": {
+      "borderRadius": {
+        "none": "0px",
+        "sm": "2px",
+        "md": "6px",
+        "lg": "14px",
+        "xl": "24px",
+        "pill": "9999px"
+      },
+      "radiusPersonality": "mixed-sharp-soft",
+      "spacing": {
+        "base": 4,
+        "scale": "fibonacci"
+      },
+      "aspectRatios": {
+        "hero": "16 / 9",
+        "card": "4 / 5",
+        "thumbnail": "1 / 1",
+        "golden": "1.618 / 1",
+        "cinematic": "2.39 / 1"
+      }
+    }
+  },
+  "generative": {
+    "noise": {
+      "seed": "artisan-ceramics-2024-unique",
+      "layoutJitter": {
+        "maxOffset": 5,
+        "rotationRange": [-1.2, 1.2]
+      },
+      "colorVariation": {
+        "hueShift": 4,
+        "lightnessVariation": 0.025
+      }
+    }
+  },
+  "components": {
+    "hero": {
+      "layout": "asymmetric-split",
+      "imageStyle": "masked-organic",
+      "textAlignment": "left",
+      "animation": "staggered-fade"
+    },
+    "cards": {
+      "variant": "outlined",
+      "hoverEffect": "subtle-lift",
+      "imageAspect": "4:5",
+      "radius": "lg"
+    },
+    "buttons": {
+      "primary": {
+        "style": "solid",
+        "radius": "sm",
+        "animation": "scale-press",
+        "textTransform": "none"
+      },
+      "secondary": {
+        "style": "ghost",
+        "radius": "none",
+        "animation": "underline-slide",
+        "textTransform": "none"
+      }
+    },
+    "navigation": {
+      "style": "minimal",
+      "position": "sticky",
+      "blur": false,
+      "borderBottom": true
+    },
+    "footer": {
+      "layout": "simple-centered",
+      "background": "primary-light"
+    }
+  }
+}

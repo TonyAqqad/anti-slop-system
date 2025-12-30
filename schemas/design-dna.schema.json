@@ -1,0 +1,357 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://anti-slop.dev/schemas/design-dna.schema.json",
+  "title": "Design DNA",
+  "description": "Schema for generative website design specifications that produce distinctive, non-generic outputs",
+  "type": "object",
+  "required": ["meta", "primitives", "generative"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
+    "meta": {
+      "type": "object",
+      "description": "Project metadata and personality descriptors",
+      "required": ["projectName", "version", "personality", "antiPatterns"],
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Kebab-case project identifier"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version"
+        },
+        "personality": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 2,
+          "maxItems": 5,
+          "description": "Specific aesthetic descriptors (not generic like 'modern' or 'clean')"
+        },
+        "antiPatterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Aesthetic patterns to explicitly avoid"
+        }
+      }
+    },
+    "primitives": {
+      "type": "object",
+      "required": ["color", "typography", "motion", "geometry"],
+      "properties": {
+        "color": {
+          "type": "object",
+          "required": ["model", "palette", "contrastRatios"],
+          "properties": {
+            "model": {
+              "type": "string",
+              "enum": ["oklch"],
+              "description": "Color model for palette definition (must be OKLCH)"
+            },
+            "palette": {
+              "type": "object",
+              "required": ["primary", "secondary", "accent", "background", "text"],
+              "additionalProperties": {
+                "$ref": "#/definitions/oklchColor"
+              }
+            },
+            "contrastRatios": {
+              "type": "object",
+              "required": ["textOnBackground"],
+              "properties": {
+                "textOnBackground": {
+                  "type": "number",
+                  "minimum": 4.5,
+                  "description": "Must meet WCAG AA minimum (4.5:1)"
+                },
+                "accentOnBackground": {
+                  "type": "number",
+                  "minimum": 3,
+                  "description": "Minimum 3:1 for UI components"
+                }
+              }
+            }
+          }
+        },
+        "typography": {
+          "type": "object",
+          "required": ["scale", "families"],
+          "properties": {
+            "scale": {
+              "type": "object",
+              "required": ["base", "ratio"],
+              "properties": {
+                "base": {
+                  "type": "number",
+                  "minimum": 14,
+                  "maximum": 24,
+                  "description": "Base font size in pixels"
+                },
+                "ratio": {
+                  "type": "number",
+                  "minimum": 1.1,
+                  "maximum": 1.618,
+                  "description": "Modular scale ratio"
+                },
+                "ratioName": {
+                  "type": "string",
+                  "enum": [
+                    "minorSecond",
+                    "majorSecond", 
+                    "minorThird",
+                    "majorThird",
+                    "perfectFourth",
+                    "augmentedFourth",
+                    "perfectFifth",
+                    "goldenRatio"
+                  ]
+                }
+              }
+            },
+            "families": {
+              "type": "object",
+              "required": ["heading", "body"],
+              "properties": {
+                "heading": {
+                  "$ref": "#/definitions/fontStack"
+                },
+                "body": {
+                  "$ref": "#/definitions/fontStack"
+                },
+                "mono": {
+                  "$ref": "#/definitions/fontStack"
+                }
+              }
+            },
+            "weights": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "enum": [100, 200, 300, 400, 500, 600, 700, 800, 900]
+                  }
+                },
+                "body": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "enum": [100, 200, 300, 400, 500, 600, 700, 800, 900]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "motion": {
+          "type": "object",
+          "required": ["springs", "defaultSpring", "reducedMotion"],
+          "properties": {
+            "springs": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "$ref": "#/definitions/springConfig"
+              }
+            },
+            "defaultSpring": {
+              "type": "string",
+              "description": "Key referencing a spring in the springs object"
+            },
+            "reducedMotion": {
+              "type": "string",
+              "enum": ["respectSystem", "alwaysReduce", "ignore"],
+              "description": "How to handle prefers-reduced-motion"
+            },
+            "easings": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/cubicBezier"
+              }
+            }
+          }
+        },
+        "geometry": {
+          "type": "object",
+          "required": ["borderRadius", "spacing"],
+          "properties": {
+            "borderRadius": {
+              "type": "object",
+              "required": ["none", "sm", "md", "lg"],
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^\\d+px$|^\\d+rem$|^9999px$"
+              }
+            },
+            "radiusPersonality": {
+              "type": "string",
+              "enum": ["sharp", "soft", "organic", "mixed-sharp-soft"],
+              "description": "Overall geometric language"
+            },
+            "spacing": {
+              "type": "object",
+              "required": ["base"],
+              "properties": {
+                "base": {
+                  "type": "integer",
+                  "enum": [4, 8],
+                  "description": "Base spacing unit in pixels"
+                },
+                "scale": {
+                  "type": "string",
+                  "enum": ["linear", "fibonacci", "exponential"],
+                  "description": "How spacing values scale"
+                }
+              }
+            },
+            "aspectRatios": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^\\d+(\\.\\d+)?\\s*/\\s*\\d+(\\.\\d+)?$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "generative": {
+      "type": "object",
+      "required": ["noise"],
+      "properties": {
+        "noise": {
+          "type": "object",
+          "required": ["seed", "layoutJitter"],
+          "properties": {
+            "seed": {
+              "type": "string",
+              "minLength": 8,
+              "description": "Deterministic seed for reproducible noise"
+            },
+            "layoutJitter": {
+              "type": "object",
+              "required": ["maxOffset", "rotationRange"],
+              "properties": {
+                "maxOffset": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 20,
+                  "description": "Maximum pixel offset for elements"
+                },
+                "rotationRange": {
+                  "type": "array",
+                  "items": { "type": "number" },
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "description": "[min, max] rotation in degrees"
+                }
+              }
+            },
+            "colorVariation": {
+              "type": "object",
+              "properties": {
+                "hueShift": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 15,
+                  "description": "Maximum hue shift in degrees"
+                },
+                "lightnessVariation": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 0.1,
+                  "description": "Maximum lightness variation (0-1)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "type": "object",
+      "description": "Component-specific design decisions",
+      "additionalProperties": {
+        "type": "object"
+      }
+    }
+  },
+  "definitions": {
+    "oklchColor": {
+      "type": "object",
+      "required": ["l", "c", "h"],
+      "properties": {
+        "l": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Lightness (0-1)"
+        },
+        "c": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.4,
+          "description": "Chroma (0-0.4)"
+        },
+        "h": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 360,
+          "description": "Hue angle in degrees"
+        }
+      }
+    },
+    "fontStack": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 2,
+      "description": "Font family with fallbacks"
+    },
+    "springConfig": {
+      "type": "object",
+      "required": ["stiffness", "damping", "mass"],
+      "properties": {
+        "stiffness": {
+          "type": "number",
+          "minimum": 50,
+          "maximum": 1000,
+          "description": "Spring stiffness"
+        },
+        "damping": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Damping coefficient"
+        },
+        "mass": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 10,
+          "description": "Mass of the animated object"
+        }
+      }
+    },
+    "cubicBezier": {
+      "type": "object",
+      "required": ["$type", "$value"],
+      "properties": {
+        "$type": {
+          "type": "string",
+          "const": "cubicBezier"
+        },
+        "$value": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    }
+  }
+}
